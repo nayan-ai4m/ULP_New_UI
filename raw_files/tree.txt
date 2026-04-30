@@ -1,0 +1,51 @@
+.
+├── .lovable/
+│   └── plan.md
+├── public/
+│   ├── favicon.ico
+│   ├── placeholder.svg
+│   └── robots.txt
+├── src/
+│   ├── components/
+│   │   ├── cockpit/
+│   │   │   ├── AlertRail.tsx
+│   │   │   ├── CameraTile.tsx
+│   │   │   ├── IndexCard.tsx
+│   │   │   ├── OEEStrip.tsx
+│   │   │   ├── SachetFeed.tsx
+│   │   │   ├── StatusPill.tsx
+│   │   │   └── TopBar.tsx
+│   │   ├── ui/
+│   │   └── NavLink.tsx
+│   ├── hooks/
+│   │   ├── use-mobile.tsx
+│   │   └── use-toast.ts
+│   ├── lib/
+│   │   ├── mock/
+│   │   │   └── dashboard.ts
+│   │   ├── quality.ts
+│   │   └── utils.ts
+│   ├── pages/
+│   │   ├── Index.tsx
+│   │   └── NotFound.tsx
+│   ├── test/
+│   │   ├── example.test.ts
+│   │   └── setup.ts
+│   ├── App.css
+│   ├── App.tsx
+│   ├── index.css
+│   ├── main.tsx
+│   └── vite-env.d.ts
+├── .gitignore
+├── components.json
+├── eslint.config.js
+├── index.html
+├── package.json
+├── postcss.config.js
+├── README.md
+├── tailwind.config.ts
+├── tsconfig.app.json
+├── tsconfig.json
+├── tsconfig.node.json
+├── vite.config.ts
+└── vitest.config.ts

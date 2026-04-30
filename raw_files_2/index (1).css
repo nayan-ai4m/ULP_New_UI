@@ -1,0 +1,160 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Dark Cascade — Industrial Dark cockpit theme.
+   All colors are HSL. Status semantics are contractual (FRS thresholds). */
+
+@layer base {
+  :root {
+    /* Surfaces (layered slate) */
+    --background: 213 35% 6%;
+    --surface-1: 215 30% 9%;
+    --surface-2: 215 28% 12%;
+    --surface-3: 215 25% 16%;
+
+    --foreground: 210 30% 92%;
+    --foreground-muted: 215 15% 62%;
+    --foreground-dim: 215 12% 42%;
+
+    --card: 215 30% 9%;
+    --card-foreground: 210 30% 92%;
+
+    --popover: 215 30% 10%;
+    --popover-foreground: 210 30% 92%;
+
+    --primary: 192 90% 55%;
+    --primary-foreground: 213 40% 8%;
+
+    --secondary: 215 25% 16%;
+    --secondary-foreground: 210 30% 92%;
+
+    --muted: 215 25% 14%;
+    --muted-foreground: 215 15% 62%;
+
+    --accent: 192 90% 55%;
+    --accent-foreground: 213 40% 8%;
+
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 210 30% 98%;
+
+    --border: 215 25% 18%;
+    --input: 215 25% 18%;
+    --ring: 192 90% 55%;
+
+    --radius: 0.625rem;
+
+    /* Status semantics — locked to FRS thresholds */
+    --status-good: 152 70% 48%;       /* Green ≥ 0.75 */
+    --status-warn: 38 92% 55%;        /* Amber ≥ 0.60 */
+    --status-critical: 0 84% 62%;     /* Red < 0.60 */
+    --status-good-soft: 152 60% 18%;
+    --status-warn-soft: 38 70% 18%;
+    --status-critical-soft: 0 60% 20%;
+
+    --accent-cyan: 192 90% 55%;
+
+    /* Effects */
+    --glow-good: 0 0 24px hsl(var(--status-good) / 0.35);
+    --glow-warn: 0 0 24px hsl(var(--status-warn) / 0.4);
+    --glow-critical: 0 0 28px hsl(var(--status-critical) / 0.45);
+    --grid-line: 215 25% 14%;
+
+    /* Sidebar (unused but kept for shadcn) */
+    --sidebar-background: 215 30% 9%;
+    --sidebar-foreground: 210 30% 92%;
+    --sidebar-primary: 192 90% 55%;
+    --sidebar-primary-foreground: 213 40% 8%;
+    --sidebar-accent: 215 25% 16%;
+    --sidebar-accent-foreground: 210 30% 92%;
+    --sidebar-border: 215 25% 18%;
+    --sidebar-ring: 192 90% 55%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  html, body, #root {
+    height: 100%;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    font-feature-settings: 'cv11', 'ss01';
+    background-image:
+      radial-gradient(ellipse at top, hsl(215 35% 11%) 0%, hsl(var(--background)) 60%);
+    background-attachment: fixed;
+  }
+
+  .font-mono {
+    font-family: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-variant-numeric: tabular-nums;
+  }
+}
+
+@layer components {
+  .panel {
+    @apply rounded-[var(--radius)] border border-border bg-[hsl(var(--surface-1))];
+    box-shadow: inset 0 1px 0 hsl(215 30% 18% / 0.4);
+  }
+
+  .panel-raised {
+    @apply rounded-[var(--radius)] border border-border bg-[hsl(var(--surface-2))];
+    box-shadow:
+      inset 0 1px 0 hsl(215 30% 22% / 0.5),
+      0 8px 24px -12px hsl(213 50% 2% / 0.6);
+  }
+
+  .hairline-top {
+    box-shadow: inset 0 1px 0 hsl(215 30% 22% / 0.5);
+  }
+
+  .status-dot {
+    @apply inline-block h-2 w-2 rounded-full;
+  }
+
+  .glow-good { box-shadow: var(--glow-good); }
+  .glow-warn { box-shadow: var(--glow-warn); }
+  .glow-critical { box-shadow: var(--glow-critical); }
+
+  .ticker {
+    transition: color 200ms ease, transform 200ms ease;
+  }
+}
+
+@layer utilities {
+  .text-good { color: hsl(var(--status-good)); }
+  .text-warn { color: hsl(var(--status-warn)); }
+  .text-critical { color: hsl(var(--status-critical)); }
+  .bg-good { background-color: hsl(var(--status-good)); }
+  .bg-warn { background-color: hsl(var(--status-warn)); }
+  .bg-critical { background-color: hsl(var(--status-critical)); }
+  .bg-good-soft { background-color: hsl(var(--status-good-soft)); }
+  .bg-warn-soft { background-color: hsl(var(--status-warn-soft)); }
+  .bg-critical-soft { background-color: hsl(var(--status-critical-soft)); }
+  .border-good { border-color: hsl(var(--status-good) / 0.4); }
+  .border-warn { border-color: hsl(var(--status-warn) / 0.4); }
+  .border-critical { border-color: hsl(var(--status-critical) / 0.5); }
+
+  .scrollbar-thin::-webkit-scrollbar { height: 6px; width: 6px; }
+  .scrollbar-thin::-webkit-scrollbar-thumb {
+    background: hsl(var(--surface-3));
+    border-radius: 3px;
+  }
+}
+
+@keyframes pulse-soft {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.45; }
+}
+.animate-pulse-soft { animation: pulse-soft 2s ease-in-out infinite; }
+
+@keyframes flash-up {
+  0% { color: hsl(var(--accent-cyan)); }
+  100% { color: inherit; }
+}
+.animate-flash { animation: flash-up 600ms ease-out; }
