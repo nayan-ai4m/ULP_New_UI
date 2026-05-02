@@ -23,7 +23,7 @@ export function ThermalBreakdown({
 }) {
   return (
     <div className="panel p-4">
-      <div className="flex items-center justify-between mb-3">
+      <div className="flex items-center justify-between mb-4">
         <h3 className="text-sm font-semibold">Thermal Breakdown</h3>
       </div>
 
@@ -48,11 +48,11 @@ export function ThermalBreakdown({
               <div className="text-[15px] text-foreground-muted mt-1 leading-tight">
                 of {c.weight.toFixed(2)} cap
               </div>
-              <div className="text-[12px] font-mono text-foreground-muted mt-1.5">
+              {/* <div className="text-[12px] font-mono text-foreground-muted mt-1.5">
                 {c.key === "uniformity"
                   ? `Delta ${sign}${c.deviation.toFixed(1)}°C`
                   : `${sign}${c.deviation.toFixed(1)}°C`}
-              </div>
+              </div> */}
               <div className="mt-2 h-1 rounded-full bg-[hsl(var(--surface-3))] overflow-hidden">
                 <div
                   className="h-full bg-current opacity-80 transition-all"
@@ -65,7 +65,7 @@ export function ThermalBreakdown({
       </div>
 
       {/* Stacked composition bar */}
-      <div className="mt-5">
+      <div className="mt-8">
         <div className="text-[13px] uppercase tracking-wider text-foreground mb-1.5">
           TQI composition
         </div>
