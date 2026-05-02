@@ -16,9 +16,6 @@ export function TqiTrendMini({ series }: { series: TrendPoint[] }) {
     <div className="panel p-4 h-[430px]">
       <div className="flex items-center justify-between mb-1">
         <h3 className="text-[15px] font-semibold">TQI Trend</h3>
-        <span className="text-[12px] font-mono text-foreground-muted">
-          Last {series.length}
-        </span>
       </div>
       <div className="flex items-center gap-3 text-[13px] uppercase tracking-wider mb-1.5">
         <span>
@@ -63,26 +60,26 @@ export function TqiTrendMini({ series }: { series: TrendPoint[] }) {
               stroke="hsl(var(--status-warn))"
               strokeDasharray="3 3"
               strokeOpacity={0.7}
-              label={{
-                value: "0.60",
-                position: "right",
-                fill: "hsl(38 92% 55%)",
-                fontSize: 10,
-                fontFamily: "JetBrains Mono, monospace",
-              }}
+              // label={{
+              //   value: "0.60",
+              //   position: "right",
+              //   fill: "hsl(38 92% 55%)",
+              //   fontSize: 10,
+              //   fontFamily: "JetBrains Mono, monospace",
+              // }}
             />
             <ReferenceLine
               y={THRESHOLDS.green}
               stroke="hsl(var(--status-good))"
               strokeDasharray="3 3"
               strokeOpacity={0.7}
-              label={{
-                value: "0.75",
-                position: "right",
-                fill: "hsl(152 70% 48%)",
-                fontSize: 10,
-                fontFamily: "JetBrains Mono, monospace",
-              }}
+              // label={{
+              //   value: "0.75",
+              //   position: "right",
+              //   fill: "hsl(152 70% 48%)",
+              //   fontSize: 10,
+              //   fontFamily: "JetBrains Mono, monospace",
+              // }}
             />
             <YAxis
               domain={[0, 1]}
@@ -91,7 +88,7 @@ export function TqiTrendMini({ series }: { series: TrendPoint[] }) {
               tick={{
                 fill: "hsl(210 30% 92%)",
                 fontSize: 10,
-                fontFamily: "JetBrains Mono, monospace",
+                // fontFamily: "JetBrains Mono, monospace",
               }}
               axisLine={{ stroke: "hsl(215 25% 22%)" }}
               tickLine={{ stroke: "hsl(215 25% 22%)" }}
@@ -100,8 +97,8 @@ export function TqiTrendMini({ series }: { series: TrendPoint[] }) {
                 value: "Score",
                 angle: -90,
                 position: "insideLeft",
-                offset: 4,
-                fill: "hsl(215 12% 42%)",
+                // offset: 9,
+                fill: "hsla(0, 0%, 100%, 1.00)",
                 fontSize: 10,
               }}
             />
@@ -116,8 +113,8 @@ export function TqiTrendMini({ series }: { series: TrendPoint[] }) {
               }
               tick={{
                 fill: "hsl(210 30% 92%)",
-                fontSize: 9,
-                fontFamily: "JetBrains Mono, monospace",
+                fontSize: 10,
+                // fontFamily: "JetBrains Mono, monospace",
               }}
               axisLine={{ stroke: "hsl(215 25% 22%)" }}
               tickLine={{ stroke: "hsl(215 25% 22%)" }}
@@ -126,8 +123,8 @@ export function TqiTrendMini({ series }: { series: TrendPoint[] }) {
                 value: "Time",
                 position: "insideBottomRight",
                 offset: -4,
-                fill: "hsl(215 12% 42%)",
-                fontSize: 9,
+                fill: "hsla(0, 0%, 100%, 1.00)",
+                fontSize: 10,
               }}
             />
             <Tooltip

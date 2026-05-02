@@ -101,15 +101,15 @@ export function IndexCard({ title, score, trend, comingSoon }: Props) {
         <div className="absolute flex top-0 right-8 gap-3 text-[13px] text-foreground mb-1">
           <span className="flex gap-2 items-end">
             <span>
-              <span className="text-critical text-[20px]">● </span>Reject &lt;{" "}
+              <span className="text-critical text-[20px]">● </span>Critical &lt;{" "}
               {THRESHOLDS.amber}
             </span>
             <span>
-              <span className="text-warn text-[20px]">●</span> Amber ≥{" "}
+              <span className="text-warn text-[20px]">●</span> Warning ≥{" "}
               {THRESHOLDS.amber}
             </span>
             <span>
-              <span className="text-good text-[20px]">●</span> Green ≥{" "}
+              <span className="text-good text-[20px]">●</span> Good ≥{" "}
               {THRESHOLDS.green}
             </span>
             {/* <span className="uppercase tracking-wider text-[13px]">

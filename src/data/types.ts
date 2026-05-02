@@ -76,6 +76,36 @@ export interface TqiDetailPayload {
   defect_description: string | null;
 }
 
+export interface ProfilePayload {
+  degrees: number[];
+  position: number[];
+  torque: number[];
+}
+
+export interface SitPayload {
+  time_ms: number[];
+  t_inner_c: number[];
+}
+
+export interface PqiHistoryRow {
+  cycle_id: number;
+  ts_ms: number;
+  r_sit: number;
+  r_trq: number;
+  r_time: number;
+  dwell_ms: number;
+  tailing_index: number;
+}
+
+export interface TqiHistoryRow {
+  cycle_id: number;
+  ts_ms: number;
+  fill_score: number;
+  contamination_score: number;
+  uniformity_score: number;
+  tqi: number;
+}
+
 /* ── Validated frame (after parsing the envelope) ── */
 
 export interface ValidFrame {

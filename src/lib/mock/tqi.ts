@@ -17,11 +17,20 @@ export interface ThermalComponent {
 
 export interface TqiSnapshot {
   tqi: number;
+  grade: "green" | "amber" | "red";
   components: ThermalComponent[];
   front: { series: JawPoint[]; setpoint: number };
   rear: { series: JawPoint[]; setpoint: number };
   gradient: { series: GradientPoint[]; tolerance: number; nominal: number };
   tqiTrend: TrendPoint[];
+  status: string | null;
+  defect_description: string | null;
+}
+
+export interface JawSnapshot {
+  front: { series: JawPoint[]; setpoint: number };
+  rear: { series: JawPoint[]; setpoint: number };
+  gradient: { series: GradientPoint[]; tolerance: number; nominal: number };
 }
 
 const FRONT_SP = 158;   // front jaw setpoint °C
@@ -103,6 +112,7 @@ function initial(): TqiSnapshot {
 
   return {
     tqi,
+    grade: "green",
     components,
     front: { series: frontSeries, setpoint: FRONT_SP },
     rear: { series: rearSeries, setpoint: REAR_SP },
@@ -112,6 +122,8 @@ function initial(): TqiSnapshot {
       nominal: REAR_SP - FRONT_SP,
     },
     tqiTrend: seedTrend(tqi),
+    status: null,
+    defect_description: null,
   };
 }
 
@@ -152,11 +164,14 @@ export function useLiveTqi(): TqiSnapshot {
 
         return {
           tqi,
+          grade: prev.grade,
           components,
           front: { ...prev.front, series: frontSeries },
           rear: { ...prev.rear, series: rearSeries },
           gradient: { ...prev.gradient, series: gradientSeries },
           tqiTrend,
+          status: null,
+          defect_description: null,
         };
       });
     }, 1500);
@@ -164,4 +179,11 @@ export function useLiveTqi(): TqiSnapshot {
   }, []);
 
   return snap;
+}
+
+/** Jaw-temperature mock only — used by FrontJawChart/RearJawChart/CrossGradientChart
+ *  while the backend has no jaw-temp TQI endpoint. */
+export function useMockJawData(): JawSnapshot {
+  const snap = useLiveTqi();
+  return { front: snap.front, rear: snap.rear, gradient: snap.gradient };
 }

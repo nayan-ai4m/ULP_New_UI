@@ -5,6 +5,7 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { bootstrapLiveData } from "@/data/bootstrap";
+import AppLayout from "@/components/layout/AppLayout";
 import Index from "./pages/Index.tsx";
 import Pqi from "./pages/Pqi.tsx";
 import Tqi from "./pages/Tqi.tsx";
@@ -25,24 +26,26 @@ const App = () => {
 
   return (
     <QueryClientProvider client={queryClient}>
-    <TooltipProvider>
-      <Toaster />
-      <Sonner />
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Index />} />
-          <Route path="/pqi" element={<Pqi />} />
-          <Route path="/tqi" element={<Tqi />} />
-          <Route path="/config" element={<Config />} />
-          <Route path="/qbom" element={<Qbom />} />
-          <Route path="/historian" element={<Historian />} />
-          <Route path="/settings" element={<Settings />} />
-          <Route path="/users" element={<Users />} />
-          {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-      </BrowserRouter>
-    </TooltipProvider>
+      <TooltipProvider>
+        <Toaster />
+        <Sonner />
+        <BrowserRouter>
+          <Routes>
+            <Route element={<AppLayout />}>
+              <Route path="/" element={<Index />} />
+              <Route path="/pqi" element={<Pqi />} />
+              <Route path="/tqi" element={<Tqi />} />
+              <Route path="/config" element={<Config />} />
+              <Route path="/qbom" element={<Qbom />} />
+              <Route path="/historian" element={<Historian />} />
+              <Route path="/settings" element={<Settings />} />
+              <Route path="/users" element={<Users />} />
+            </Route>
+            {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </BrowserRouter>
+      </TooltipProvider>
     </QueryClientProvider>
   );
 };

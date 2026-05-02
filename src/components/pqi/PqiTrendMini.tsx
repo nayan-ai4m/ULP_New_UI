@@ -63,26 +63,12 @@ export function PqiTrendMini({ series }: { series: TrendPoint[] }) {
               stroke="hsl(var(--status-warn))"
               strokeDasharray="3 3"
               strokeOpacity={0.7}
-              label={{
-                value: "0.60",
-                position: "right",
-                fill: "hsl(38 92% 55%)",
-                fontSize: 10,
-                // fontFamily: "JetBrains Mono, monospace",
-              }}
             />
             <ReferenceLine
               y={THRESHOLDS.green}
               stroke="hsl(var(--status-good))"
               strokeDasharray="3 3"
               strokeOpacity={0.7}
-              label={{
-                value: "0.75",
-                position: "right",
-                fill: "hsl(152 70% 48%)",
-                fontSize: 10,
-                // fontFamily: "JetBrains Mono, monospace",
-              }}
             />
             <YAxis
               domain={[0, 1]}

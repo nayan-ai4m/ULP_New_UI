@@ -4,7 +4,11 @@ import { StatusPill } from "@/components/cockpit/StatusPill";
 export function RawTailingIndex({ value }: { value: number }) {
   const status = getQualityStatus(value);
   const colorVar =
-    status === "good" ? "var(--status-good)" : status === "warn" ? "var(--status-warn)" : "var(--status-critical)";
+    status === "good"
+      ? "var(--status-good)"
+      : status === "warn"
+        ? "var(--status-warn)"
+        : "var(--status-critical)";
   return (
     <div className="panel p-4">
       <div className="flex items-center justify-between mb-2">
@@ -13,14 +17,24 @@ export function RawTailingIndex({ value }: { value: number }) {
       </div>
       <div
         className="font-mono font-semibold leading-none ticker"
-        style={{ color: `hsl(${colorVar})`, fontSize: "clamp(2rem, 4vw, 3rem)" }}
+        style={{
+          color: `hsl(${colorVar})`,
+          fontSize: "clamp(2rem, 4vw, 3rem)",
+        }}
       >
         {formatScore(value)}
       </div>
       <div className="mt-3 flex items-center gap-3 text-[13px] uppercase tracking-wider">
-        <span className="flex gap-1"><span className="text-critical">●</span>Reject &lt; {THRESHOLDS.amber}</span>
-        <span className="flex gap-1"><span className="text-warn">●</span>Amber ≥ {THRESHOLDS.amber}</span>
-        <span className="flex gap-1"><span className="text-good">●</span>Green ≥ {THRESHOLDS.green}</span>
+        <span className="flex gap-1">
+          <span className="text-critical">●</span>Critical &lt;{" "}
+          {THRESHOLDS.amber}
+        </span>
+        <span className="flex gap-1">
+          <span className="text-warn">●</span>Warning ≥ {THRESHOLDS.amber}
+        </span>
+        <span className="flex gap-1">
+          <span className="text-good">●</span>Good ≥ {THRESHOLDS.green}
+        </span>
       </div>
     </div>
   );

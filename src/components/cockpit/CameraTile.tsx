@@ -7,9 +7,11 @@ interface Props {
   name: string;
   /** MJPEG endpoint URL, e.g. "/api/tqi/stream/1" */
   streamUrl?: string;
+  /** Tile height in viewport height units. Defaults to 21. */
+  heightVh?: number;
 }
 
-export function CameraTile({ name, streamUrl }: Props) {
+export function CameraTile({ name, streamUrl, heightVh = 21 }: Props) {
   const [state, setState] = useState<StreamState>(
     streamUrl ? "loading" : "error",
   );
@@ -23,7 +25,7 @@ export function CameraTile({ name, streamUrl }: Props) {
   };
 
   return (
-    <div className="panel-raised relative overflow-hidden flex flex-col h-[21vh]">
+    <div className="panel-raised relative overflow-hidden flex flex-col" style={{ height: `${heightVh}vh` }}>
       <div className="flex items-center justify-between px-3 py-2 border-b border-border">
         <div className="flex items-center gap-2 text-xs">
           <span className="font-medium">{name}</span>

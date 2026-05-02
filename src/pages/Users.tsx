@@ -1,8 +1,6 @@
 import { useState } from "react";
 import { cn } from "@/lib/utils";
-import { useLiveDashboard } from "@/lib/mock/dashboard";
 import { useUsersState } from "@/lib/mock/users";
-import { TopBar } from "@/components/cockpit/TopBar";
 import { UserSummaryStrip } from "@/components/users/UserSummaryStrip";
 import { UserToolbar } from "@/components/users/UserToolbar";
 import { UserTable } from "@/components/users/UserTable";
@@ -19,11 +17,10 @@ type Tab = "directory" | "activity";
 
 const TABS: { id: Tab; label: string }[] = [
   { id: "directory", label: "User Directory" },
-  { id: "activity",  label: "Activity Log" },
+  { id: "activity", label: "Activity Log" },
 ];
 
 const Users = () => {
-  const dash = useLiveDashboard();
   const state = useUsersState();
   const [tab, setTab] = useState<Tab>("directory");
 
@@ -34,9 +31,7 @@ const Users = () => {
   const [toggleUser, setToggleUser] = useState<User | null>(null);
 
   return (
-    <div className="min-h-screen flex flex-col">
-      <TopBar machine={dash.machine} />
-
+    <>
       {/* Sub-tab bar */}
       <div className="border-b border-border bg-[hsl(var(--surface-1))]/60 px-5 flex items-center gap-1 overflow-x-auto scrollbar-thin">
         {TABS.map((t) => {
@@ -47,7 +42,9 @@ const Users = () => {
               onClick={() => setTab(t.id)}
               className={cn(
                 "relative px-4 py-2.5 text-sm transition-colors whitespace-nowrap",
-                active ? "text-foreground" : "text-foreground-muted hover:text-foreground",
+                active
+                  ? "text-foreground"
+                  : "text-foreground-muted hover:text-foreground",
               )}
             >
               {t.label}
@@ -76,20 +73,17 @@ const Users = () => {
         {tab === "activity" && <ActivityLog state={state} />}
       </main>
 
-      <footer className="border-t border-border px-5 py-3 flex items-center justify-between">
-        <span className="text-[11px] text-foreground-dim">
-          Dark Cascade Framework · AI4M-FRS-2604-001 · Edge AI Gateway
-        </span>
-        <span className="font-mono text-[11px] text-foreground-dim">
-          PostgreSQL user_roles · RBAC · Row-Level Security · JWT Auth
-        </span>
-      </footer>
-
       {/* Dialogs */}
       <AddUserDialog
         open={addOpen}
         onClose={() => setAddOpen(false)}
-        onSubmit={(data) => state.addUser({ username: data.username, displayName: data.displayName, role: data.role })}
+        onSubmit={(data) =>
+          state.addUser({
+            username: data.username,
+            displayName: data.displayName,
+            role: data.role,
+          })
+        }
       />
       <EditUserDialog
         user={editUser}
@@ -106,7 +100,7 @@ const Users = () => {
         onClose={() => setToggleUser(null)}
         onConfirm={(id) => state.toggleStatus(id)}
       />
-    </div>
+    </>
   );
 };
 

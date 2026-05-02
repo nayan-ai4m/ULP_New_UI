@@ -1,9 +1,9 @@
 /**
  * Zustand global store — the single source of truth for all real-time
- * Dashboard data received via WebSocket.
+ * data received via WebSocket (Dashboard + PQI + TQI pages).
  *
- * Replaces the mock `useLiveDashboard` hook with ring-buffer history
- * and latest-value snapshots fed by the WsClient.
+ * Replaces the mock `useLiveDashboard` / `useLivePqi` hooks with
+ * ring-buffer history and latest-value snapshots fed by the WsClient.
  */
 
 import { create } from "zustand";
@@ -13,7 +13,13 @@ import type {
   Grade,
   HistoryRow,
   LiveCyclePayload,
+  PqiDetailPayload,
+  PqiHistoryRow,
+  ProfilePayload,
+  SitPayload,
   StatusPayload,
+  TqiDetailPayload,
+  TqiHistoryRow,
   ValidFrame,
   WsState,
 } from "./types";
@@ -39,10 +45,16 @@ interface LiveState {
   latest: {
     cycle?: LiveCyclePayload & { ts_ms: number };
     status?: StatusPayload & { ts_ms: number };
+    pqiDetail?: PqiDetailPayload & { cycle_id: number; ts_ms: number };
+    tqiDetail?: TqiDetailPayload & { cycle_id: number; ts_ms: number };
+    profile?: ProfilePayload & { cycle_id: number; ts_ms: number };
+    sit?: SitPayload & { cycle_id: number; ts_ms: number };
   };
 
   history: {
     cycle: HistoryRow[];
+    pqi: PqiHistoryRow[];
+    tqi: TqiHistoryRow[];
   };
 
   alarms: AlarmRecord[];
@@ -62,13 +74,15 @@ export const useLiveStore = create<LiveState>((set) => ({
   wsConnected: false,
 
   latest: {},
-  history: { cycle: [] },
+  history: { cycle: [], pqi: [], tqi: [] },
   alarms: [],
 
   commitBatch: (frames) =>
     set((state) => {
       let latest = { ...state.latest };
       let cycleHistory = state.history.cycle;
+      let pqiHistory = state.history.pqi;
+      let tqiHistory = state.history.tqi;
       let alarms = state.alarms;
 
       for (const frame of frames) {
@@ -106,6 +120,57 @@ export const useLiveStore = create<LiveState>((set) => ({
             };
             break;
           }
+          case "mc26/live/pqi/detail": {
+            const p = frame.payload as PqiDetailPayload;
+            latest = {
+              ...latest,
+              pqiDetail: { ...p, cycle_id: frame.cycle_id, ts_ms: frame.ts_ms },
+            };
+            pqiHistory = pushCapped(pqiHistory, {
+              cycle_id: frame.cycle_id,
+              ts_ms: frame.ts_ms,
+              r_sit: p.r_sit,
+              r_trq: p.r_trq,
+              r_time: p.r_time,
+              dwell_ms: p.dwell_ms,
+              tailing_index: p.tailing_index,
+            }, HISTORY_CAP);
+            break;
+          }
+          case "mc26/live/tqi/detail": {
+            const p = frame.payload as TqiDetailPayload;
+            latest = {
+              ...latest,
+              tqiDetail: { ...p, cycle_id: frame.cycle_id, ts_ms: frame.ts_ms },
+            };
+            if (p.tqi != null) {
+              tqiHistory = pushCapped(tqiHistory, {
+                cycle_id: frame.cycle_id,
+                ts_ms: frame.ts_ms,
+                fill_score: p.fill_score ?? 0,
+                contamination_score: p.contamination_score ?? 0,
+                uniformity_score: p.uniformity_score ?? 0,
+                tqi: p.tqi,
+              }, HISTORY_CAP);
+            }
+            break;
+          }
+          case "mc26/live/profile": {
+            const p = frame.payload as ProfilePayload;
+            latest = {
+              ...latest,
+              profile: { ...p, cycle_id: frame.cycle_id, ts_ms: frame.ts_ms },
+            };
+            break;
+          }
+          case "mc26/live/sit": {
+            const p = frame.payload as SitPayload;
+            latest = {
+              ...latest,
+              sit: { ...p, cycle_id: frame.cycle_id, ts_ms: frame.ts_ms },
+            };
+            break;
+          }
           case "mc26/alarm": {
             const p = frame.payload as AlarmPayload;
             const record: AlarmRecord = {
@@ -125,8 +190,6 @@ export const useLiveStore = create<LiveState>((set) => ({
             }
             break;
           }
-          // Other topics (pqi/detail, tqi/detail, profile, sit) will be
-          // handled here when PQI/TQI pages are integrated.
           default:
             break;
         }
@@ -134,7 +197,7 @@ export const useLiveStore = create<LiveState>((set) => ({
 
       return {
         latest,
-        history: { cycle: cycleHistory },
+        history: { cycle: cycleHistory, pqi: pqiHistory, tqi: tqiHistory },
         alarms,
       };
     }),
@@ -159,7 +222,7 @@ export const useLiveStore = create<LiveState>((set) => ({
       wsState: "idle",
       wsConnected: false,
       latest: {},
-      history: { cycle: [] },
+      history: { cycle: [], pqi: [], tqi: [] },
       alarms: [],
     }),
 }));
@@ -168,7 +231,13 @@ export const useLiveStore = create<LiveState>((set) => ({
 
 export const selLatestCycle = (s: LiveState) => s.latest.cycle;
 export const selLatestStatus = (s: LiveState) => s.latest.status;
+export const selLatestPqiDetail = (s: LiveState) => s.latest.pqiDetail;
+export const selLatestProfile = (s: LiveState) => s.latest.profile;
+export const selLatestSit = (s: LiveState) => s.latest.sit;
 export const selCycleHistory = (s: LiveState) => s.history.cycle;
+export const selPqiHistory = (s: LiveState) => s.history.pqi;
+export const selLatestTqi = (s: LiveState) => s.latest.tqiDetail ?? null;
+export const selTqiHistory = (s: LiveState) => s.history.tqi;
 export const selAlarms = (s: LiveState) => s.alarms;
 export const selWsState = (s: LiveState) => s.wsState;
 export const selWsConnected = (s: LiveState) => s.wsConnected;
