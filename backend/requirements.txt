@@ -1,0 +1,9 @@
+# Dashboard backend — Python 3.11+
+# Floor versions only; let pip resolve compatible wheels.
+fastapi>=0.115
+uvicorn[standard]>=0.30
+psycopg2-binary>=2.9
+opencv-python-headless>=4.8
+pyzmq>=25.0
+numpy>=1.26
+scipy>=1.11

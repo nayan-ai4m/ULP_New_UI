@@ -14,7 +14,7 @@ export function getQualityStatus(score: number): QualityStatus {
 
 export const STATUS_LABEL: Record<QualityStatus, string> = {
   good: "Good",
-  warn: "Watch",
+  warn: "Warning",
   critical: "Critical",
 };
 

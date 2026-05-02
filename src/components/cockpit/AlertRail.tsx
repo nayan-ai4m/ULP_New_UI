@@ -24,10 +24,10 @@ export function AlertRail({ alerts }: { alerts: DashboardSnapshot["alerts"] }) {
       </div>
       <div className="flex-1 overflow-y-auto scrollbar-thin">
         {visible.length === 0 ? (
-          <div className="h-full grid place-items-center text-center p-6 text-foreground-dim text-sm">
+          <div className="h-full grid place-items-center text-center p-6 text-foreground text-sm">
             <div>
               <Check className="h-6 w-6 mx-auto mb-2 text-good" />
-              All indices within green band.
+              All indices within good range.
             </div>
           </div>
         ) : (
@@ -42,7 +42,13 @@ export function AlertRail({ alerts }: { alerts: DashboardSnapshot["alerts"] }) {
   );
 }
 
-function AlertLogEntry({ a, onDismiss }: { a: AlertEvent; onDismiss: (id: string) => void }) {
+function AlertLogEntry({
+  a,
+  onDismiss,
+}: {
+  a: AlertEvent;
+  onDismiss: (id: string) => void;
+}) {
   const isCrit = a.grade === "critical";
   return (
     <li className="p-4">
@@ -51,10 +57,17 @@ function AlertLogEntry({ a, onDismiss }: { a: AlertEvent; onDismiss: (id: string
         <span
           className={cn(
             "inline-flex items-center gap-1.5 rounded-full border px-2 py-0.5 text-[12px] font-medium uppercase tracking-wider",
-            isCrit ? "bg-critical-soft text-critical border-critical" : "bg-warn-soft text-warn border-warn",
+            isCrit
+              ? "bg-critical-soft text-critical border-critical"
+              : "bg-warn-soft text-warn border-warn",
           )}
         >
-          <span className={cn("status-dot", isCrit ? "bg-critical animate-pulse-soft" : "bg-warn")} />
+          <span
+            className={cn(
+              "status-dot",
+              isCrit ? "bg-critical animate-pulse-soft" : "bg-warn",
+            )}
+          />
           {String(a.index).toUpperCase()} · {isCrit ? "Critical" : "Watch"}
         </span>
         <div className="flex items-center gap-2">
@@ -87,7 +100,9 @@ function AlertLogEntry({ a, onDismiss }: { a: AlertEvent; onDismiss: (id: string
             </span>
           )}
         </div>
-        <p className="text-[15px] text-foreground-muted leading-snug">{a.action}</p>
+        <p className="text-[15px] text-foreground-muted leading-snug">
+          {a.action}
+        </p>
       </div>
     </li>
   );
