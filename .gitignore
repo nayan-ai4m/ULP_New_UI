@@ -22,3 +22,10 @@ Thumbs.db
 # Logs
 *.log
 npm-debug.log*
+
+# Ignored Folders
+__pycache__/
+.venv/
+old_ui_images/
+raw_files/
+raw_files_2/
